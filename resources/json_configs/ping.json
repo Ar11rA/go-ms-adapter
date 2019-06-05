@@ -1,5 +1,6 @@
 {
   "url": "http://localhost:3000/ping",
+  "method": "GET",
   "requestTemplate": "ping_request",
   "requestParams": [{
     "name": "Name",

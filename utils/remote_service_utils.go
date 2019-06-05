@@ -25,15 +25,29 @@ func FormRequest(contents []byte, d interface{}) *bytes.Buffer {
 	return buf
 }
 
-// MakePostRequest - make post call to remote url and input request
-func MakePostRequest(remoteURL string, buf *bytes.Buffer, out chan string) {
+// MakeRemoteRequest - make remote call to remote url and input request
+func MakeRemoteRequest(remoteURL string, method string, buf *bytes.Buffer, out chan string) {
 	timeout := 1000 * time.Millisecond
 	client := httpclient.NewClient(httpclient.WithHTTPTimeout(timeout))
 	buff := []io.Reader{buf}
 	combined := io.MultiReader(buff...)
 	headers := http.Header{}
 	headers.Set("Content-Type", "application/json")
-	response, _ := client.Post(remoteURL, combined, headers)
+
+	
+	var response *http.Response
+	log.Println(method)
+	switch(method){
+	case "POST": 
+		response, _ = client.Post(remoteURL, combined, headers)
+	case "GET": 
+		response, _ = client.Get(remoteURL, headers)
+	default : 
+		log.Println("Neither GET nor POST")
+		out <- string("Neither GET nor POST")
+		return
+	}
+
 	byteResponse, _ := ioutil.ReadAll(response.Body)
 	out <- string(byteResponse)
 }

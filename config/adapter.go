@@ -9,6 +9,7 @@ type TemplateParams struct {
 		Type string `json:"type"`
 	} `json:"requestParams"`
 	ResponseTemplate string `json:"responseTemplate"`
+	Method string `json:"method"`
 }
 
 // JSONConfig - resource key mapped to template params

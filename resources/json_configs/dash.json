@@ -1,7 +1,7 @@
 {
-  "url": "http://localhost:3000/pong",
-  "method": "POST",
-  "requestTemplate": "pong_request",
+  "url": "http://localhost:3000/dash",
+  "method": "PUT",
+  "requestTemplate": "dash_request",
   "requestParams": [{
     "name": "field1",
     "type": "String"

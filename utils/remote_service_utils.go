@@ -22,7 +22,6 @@ func FormRequest(contents []byte, d interface{}) *bytes.Buffer {
 	if err != nil {
 		log.Fatalf("templating failed with '%s'\n", err)
 	}
-	log.Println("Final request:", buf.String())
 	return buf
 }
 

@@ -1,0 +1,12 @@
+{
+  "url": "http://localhost:3000/ping",
+  "requestTemplate": "sample_request",
+  "requestParams": [{
+    "name": "Name",
+    "type": "String"
+  }, {
+    "name": "Value",
+    "type": "String"
+  }],
+  "responseTemplate": "sample_response"
+}

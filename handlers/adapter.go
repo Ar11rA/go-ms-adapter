@@ -14,11 +14,11 @@ func GenericHandler(w http.ResponseWriter, r *http.Request) {
 	var result map[string]interface{}
 	json.Unmarshal([]byte(string(bodyBuffer)), &result)
 	resourceKey := result["resourceKey"].(string)
-	url := config.Configs[resourceKey].URL
 	requestTemplateName := config.Configs[resourceKey].RequestTemplate
 	requestTemplateConfig := config.Templates[requestTemplateName]
 	requestTemplate := utils.FormRequest(requestTemplateConfig, result)
 	out := make(chan string)
+	url := config.Configs[resourceKey].URL
 	go utils.MakePostRequest(url, requestTemplate, out)
 	utils.JSON(w, http.StatusOK, <-out)
 }

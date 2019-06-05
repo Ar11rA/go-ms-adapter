@@ -1,0 +1,15 @@
+{
+  "url": "http://localhost:3000/pong",
+  "requestTemplate": "pong_request",
+  "requestParams": [{
+    "name": "field1",
+    "type": "String"
+  }, {
+    "name": "field2",
+    "type": "String"
+  },{
+    "name": "field3",
+    "type": "String"
+  }],
+  "responseTemplate": "sample_response"
+}

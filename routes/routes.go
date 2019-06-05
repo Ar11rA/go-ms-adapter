@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"go/go-adapter-framework/handlers"
+	"go-ms-adapter/handlers"
 
 	"github.com/gorilla/mux"
 )

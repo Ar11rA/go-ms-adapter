@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go/go-adapter-framework/config"
-	"go/go-adapter-framework/routes"
+	"go-ms-adapter/config"
+	"go-ms-adapter/routes"
 )
 
 func main() {

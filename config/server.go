@@ -2,7 +2,7 @@ package config
 
 import (
 	"encoding/json"
-	"go/go-adapter-framework/utils"
+	"go-ms-adapter/utils"
 	"log"
 	"net/http"
 	"strings"

@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
-	"go/go-adapter-framework/config"
-	"go/go-adapter-framework/utils"
+	"go-ms-adapter/config"
+	"go-ms-adapter/utils"
 	"io/ioutil"
 	"net/http"
 )

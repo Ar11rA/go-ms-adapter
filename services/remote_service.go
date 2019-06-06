@@ -16,7 +16,7 @@ import (
 )
 
 // RequestValidator - validate the request params
-func RequestValidator(requestParams []config.RequestValidatorParams, input map[string]interface{}) (bool, string) {
+func RequestValidator(requestParams []config.Params, input map[string]interface{}) (bool, string) {
 	for _, param := range requestParams {
 		if _, ok := input[param.Name]; !ok {
 			return false, "Missing input: " + param.Name

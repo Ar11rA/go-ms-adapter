@@ -1,18 +1,18 @@
 package config
 
-// RequestValidatorParams - Validation model
-type RequestValidatorParams struct {
+// Params - Validation model
+type Params struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
 }
 
 // TemplateParams - JSON params
 type TemplateParams struct {
-	URL              string                   `json:"url"`
-	RequestTemplate  string                   `json:"requestTemplate"`
-	RequestParams    []RequestValidatorParams `json:"requestParams"`
-	ResponseTemplate string                   `json:"responseTemplate"`
-	Method           string                   `json:"method"`
+	URL              string   `json:"url"`
+	RequestTemplate  string   `json:"requestTemplate"`
+	RequestParams    []Params `json:"requestParams"`
+	ResponseTemplate string   `json:"responseTemplate"`
+	Method           string   `json:"method"`
 }
 
 // JSONConfig - resource key mapped to template params

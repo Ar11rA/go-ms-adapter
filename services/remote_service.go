@@ -11,7 +11,6 @@ import (
 	"reflect"
 	"strings"
 	"time"
-
 	"github.com/gojektech/heimdall/httpclient"
 )
 
@@ -51,17 +50,26 @@ func MakeRemoteRequest(remoteURL string, method string, buf *bytes.Buffer, out c
 	headers.Set("Content-Type", "application/json")
 
 	var response *http.Response
-	switch method {
-	case "POST":
-		response, _ = client.Post(remoteURL, combined, headers)
-	case "GET":
+	switch(method){
+	case "GET": 
 		response, _ = client.Get(remoteURL, headers)
-	default:
-		log.Println("Neither GET nor POST")
-		out <- string("Neither GET nor POST")
+		break
+	case "POST": 
+		response, _ = client.Post(remoteURL, combined, headers)
+		break
+	case "PUT": 
+		response, _ = client.Put(remoteURL, combined, headers)
+		break
+	case "DELETE": 
+		response, _ = client.Delete(remoteURL, headers)
+		break
+	default : 
+		log.Println("Invalid Method")
+		out <- string("Invalid Method")
 		return
 	}
 
+	log.Println(response.Body)
 	byteResponse, _ := ioutil.ReadAll(response.Body)
 	out <- string(byteResponse)
 }

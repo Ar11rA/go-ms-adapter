@@ -1,12 +1,15 @@
 {
   "url": "http://localhost:3000/ping",
-  "method": "GET",
+  "method": "POST",
   "requestTemplate": "ping_request",
   "requestParams": [{
-    "name": "Name",
+    "name": "field1",
     "type": "String"
   }, {
-    "name": "Value",
+    "name": "field2",
+    "type": "String"
+  },{
+    "name": "field3",
     "type": "String"
   }],
   "responseTemplate": "sample_response"

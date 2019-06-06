@@ -41,7 +41,7 @@ func FormRequest(contents []byte, d interface{}) *bytes.Buffer {
 }
 
 // MakeRemoteRequest - make remote call to remote url and input request
-func MakeRemoteRequest(remoteURL string, method string, buf *bytes.Buffer, out chan string) {
+func MakeRemoteRequest(remoteURL string, method string, buf *bytes.Buffer) string {
 	timeout := 1000 * time.Millisecond
 	client := httpclient.NewClient(httpclient.WithHTTPTimeout(timeout))
 	buff := []io.Reader{buf}
@@ -64,12 +64,10 @@ func MakeRemoteRequest(remoteURL string, method string, buf *bytes.Buffer, out c
 		response, _ = client.Delete(remoteURL, headers)
 		break
 	default : 
-		log.Println("Invalid Method")
-		out <- string("Invalid Method")
-		return
+		return "INVALID_METHOD"
 	}
 
 	log.Println(response.Body)
 	byteResponse, _ := ioutil.ReadAll(response.Body)
-	out <- string(byteResponse)
+	return string(byteResponse)
 }

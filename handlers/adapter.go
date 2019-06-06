@@ -5,6 +5,7 @@ import (
 	"go-ms-adapter/config"
 	"go-ms-adapter/services"
 	"go-ms-adapter/utils"
+	"go-ms-adapter/constants"
 	"io/ioutil"
 	"net/http"
 	"fmt"
@@ -47,11 +48,14 @@ func GenericHandler(w http.ResponseWriter, r *http.Request) {
 	requestTemplateConfig := config.Templates[requestTemplateName]
 
 	queryParams := config.Configs[resourceKey].QueryParams
-	requestTemplate := utils.FormRequest(requestTemplateConfig, result)
+	requestTemplate := services.FormRequest(requestTemplateConfig, result)
 
-	out := make(chan string)
 	url := config.Configs[resourceKey].URL + formQueryParams(method, result, queryParams)
-	go utils.MakeRemoteRequest(url, method, requestTemplate, out)
+	out := services.MakeRemoteRequest(url, method, requestTemplate)
 
-	utils.JSON(w, http.StatusOK, <-out)
+	if _, ok := constants.ERROR_MESSAGES[out]; ok {
+		utils.Error(w, http.StatusBadRequest, constants.ERROR_MESSAGES[out])
+		return
+	}
+	utils.JSON(w, http.StatusOK, out)
 }

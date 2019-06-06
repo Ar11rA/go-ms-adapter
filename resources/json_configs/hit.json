@@ -1,0 +1,12 @@
+{
+  "url": "http://localhost:3000/hit",
+  "method": "GET",
+  "queryParams": [{
+    "name": "name",
+    "type": "String"
+  }, {
+    "name": "value",
+    "type": "String"
+  }],
+  "responseTemplate": "sample_response"
+}

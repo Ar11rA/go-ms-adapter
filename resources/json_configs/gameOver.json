@@ -1,0 +1,9 @@
+{
+  "url": "http://localhost:3000/gameOver",
+  "method": "DELETE",
+  "queryParams": [{
+    "name": "id",
+    "type": "String"
+  }],
+  "responseTemplate": "sample_response"
+}

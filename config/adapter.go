@@ -8,11 +8,12 @@ type Params struct {
 
 // TemplateParams - JSON params
 type TemplateParams struct {
-	URL              string   `json:"url"`
-	RequestTemplate  string   `json:"requestTemplate"`
-	RequestParams    []Params `json:"requestParams"`
-	ResponseTemplate string   `json:"responseTemplate"`
-	Method           string   `json:"method"`
+	URL             string `json:"url"`
+	RequestTemplate string `json:"requestTemplate"`
+	Method 					string `json:"method"`
+	RequestParams   []Params `json:"requestParams"`
+	QueryParams			[]Params `json:"queryParams"`
+	ResponseTemplate string `json:"responseTemplate"`
 }
 
 // JSONConfig - resource key mapped to template params

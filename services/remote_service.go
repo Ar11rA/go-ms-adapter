@@ -10,10 +10,26 @@ import (
 	"net/http"
 	"reflect"
 	"strings"
+	"fmt"
 	"time"
-
 	"github.com/gojektech/heimdall/httpclient"
 )
+
+// FormQueryParams - convert query params to append to url
+func FormQueryParams(method string, buff map[string]interface {}, queryParams []config.Params) string{
+	urlQueryParams := ""
+
+	if(len(queryParams) > 0){
+		var parameters []string
+		for _, element := range queryParams {
+			if(buff[element.Name] != nil) {
+				parameters = append(parameters, fmt.Sprintf("%s=%s", element.Name, buff[element.Name]))
+			}
+		}
+		return "?" + strings.Join(parameters, "&")
+	}
+	return urlQueryParams
+}
 
 // RequestValidator - validate the request params
 func RequestValidator(requestParams []config.Params, input map[string]interface{}) (bool, string) {
@@ -42,7 +58,7 @@ func FormRequest(contents []byte, d interface{}) *bytes.Buffer {
 }
 
 // MakeRemoteRequest - make remote call to remote url and input request
-func MakeRemoteRequest(remoteURL string, method string, buf *bytes.Buffer, out chan string) {
+func MakeRemoteRequest(remoteURL string, method string, buf *bytes.Buffer) string {
 	timeout := 1000 * time.Millisecond
 	client := httpclient.NewClient(httpclient.WithHTTPTimeout(timeout))
 	buff := []io.Reader{buf}
@@ -51,17 +67,23 @@ func MakeRemoteRequest(remoteURL string, method string, buf *bytes.Buffer, out c
 	headers.Set("Content-Type", "application/json")
 
 	var response *http.Response
-	switch method {
-	case "POST":
-		response, _ = client.Post(remoteURL, combined, headers)
-	case "GET":
+	switch(method){
+	case "GET": 
 		response, _ = client.Get(remoteURL, headers)
-	default:
-		log.Println("Neither GET nor POST")
-		out <- string("Neither GET nor POST")
-		return
+		break
+	case "POST": 
+		response, _ = client.Post(remoteURL, combined, headers)
+		break
+	case "PUT": 
+		response, _ = client.Put(remoteURL, combined, headers)
+		break
+	case "DELETE": 
+		response, _ = client.Delete(remoteURL, headers)
+		break
+	default : 
+		return "INVALID_METHOD"
 	}
 
 	byteResponse, _ := ioutil.ReadAll(response.Body)
-	out <- string(byteResponse)
+	return string(byteResponse)
 }

@@ -5,6 +5,7 @@ import (
 	"go-ms-adapter/config"
 	"go-ms-adapter/services"
 	"go-ms-adapter/utils"
+	"go-ms-adapter/constants"
 	"io/ioutil"
 	"net/http"
 )
@@ -16,8 +17,9 @@ func GenericHandler(w http.ResponseWriter, r *http.Request) {
 	//request
 	var result map[string]interface{}
 	json.Unmarshal([]byte(string(bodyBuffer)), &result)
-
 	resourceKey := result["resourceKey"].(string)
+	delete(result, "resourceKey")
+
 	isRequestValid, errMessage := services.RequestValidator(config.Configs[resourceKey].RequestParams, result)
 	if !isRequestValid {
 		utils.Error(w, http.StatusBadRequest, errMessage)
@@ -27,11 +29,15 @@ func GenericHandler(w http.ResponseWriter, r *http.Request) {
 	method := config.Configs[resourceKey].Method
 	requestTemplateConfig := config.Templates[requestTemplateName]
 
+	queryParams := config.Configs[resourceKey].QueryParams
 	requestTemplate := services.FormRequest(requestTemplateConfig, result)
-	out := make(chan string)
-	url := config.Configs[resourceKey].URL
 
-	go services.MakeRemoteRequest(url, method, requestTemplate, out)
+	url := config.Configs[resourceKey].URL + services.FormQueryParams(method, result, queryParams)
+	out := services.MakeRemoteRequest(url, method, requestTemplate)
 
-	utils.JSON(w, http.StatusOK, <-out)
+	if _, ok := constants.ERROR_MESSAGES[out]; ok {
+		utils.Error(w, http.StatusBadRequest, constants.ERROR_MESSAGES[out])
+		return
+	}
+	utils.JSON(w, http.StatusOK, out)
 }

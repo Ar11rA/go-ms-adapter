@@ -1,6 +1,6 @@
 {
   "url": "http://localhost:3000/pong",
-  "method": "POST",
+  "method": "PUT",
   "requestTemplate": "pong_request",
   "requestParams": [{
     "name": "field1",
@@ -10,6 +10,10 @@
     "type": "String"
   },{
     "name": "field3",
+    "type": "String"
+  }],
+  "queryParams": [{
+    "name": "id",
     "type": "String"
   }],
   "responseTemplate": "sample_response"

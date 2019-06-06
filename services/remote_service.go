@@ -1,16 +1,32 @@
-package utils
+package services
 
 import (
 	"bytes"
+	"go-ms-adapter/config"
 	"html/template"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"reflect"
+	"strings"
 	"time"
 
 	"github.com/gojektech/heimdall/httpclient"
 )
+
+// RequestValidator - validate the request params
+func RequestValidator(requestParams []config.Params, input map[string]interface{}) (bool, string) {
+	for _, param := range requestParams {
+		if _, ok := input[param.Name]; !ok {
+			return false, "Missing input: " + param.Name
+		}
+		if reflect.TypeOf(input[param.Name]).String() != strings.ToLower(param.Type) {
+			return false, "Request failed for " + param.Name
+		}
+	}
+	return true, ""
+}
 
 // FormRequest - form the request template based on contents and received data
 func FormRequest(contents []byte, d interface{}) *bytes.Buffer {
@@ -34,15 +50,13 @@ func MakeRemoteRequest(remoteURL string, method string, buf *bytes.Buffer, out c
 	headers := http.Header{}
 	headers.Set("Content-Type", "application/json")
 
-	
 	var response *http.Response
-	log.Println(method)
-	switch(method){
-	case "POST": 
+	switch method {
+	case "POST":
 		response, _ = client.Post(remoteURL, combined, headers)
-	case "GET": 
+	case "GET":
 		response, _ = client.Get(remoteURL, headers)
-	default : 
+	default:
 		log.Println("Neither GET nor POST")
 		out <- string("Neither GET nor POST")
 		return

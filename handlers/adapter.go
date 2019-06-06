@@ -8,25 +8,7 @@ import (
 	"go-ms-adapter/constants"
 	"io/ioutil"
 	"net/http"
-	"fmt"
-	"strings"
 )
-
-// convert query params to append to url
-func formQueryParams(method string, buff map[string]interface {}, queryParams []config.Params) string{
-	urlQueryParams := ""
-
-	if(len(queryParams) > 0){
-		var parameters []string
-		for _, element := range queryParams {
-			if(buff[element.Name] != nil) {
-				parameters = append(parameters, fmt.Sprintf("%s=%s", element.Name, buff[element.Name]))
-			}
-		}
-		return "?" + strings.Join(parameters, "&")
-	}
-	return urlQueryParams
-}
 
 // GenericHandler : Resource key based handler
 func GenericHandler(w http.ResponseWriter, r *http.Request) {
@@ -50,7 +32,7 @@ func GenericHandler(w http.ResponseWriter, r *http.Request) {
 	queryParams := config.Configs[resourceKey].QueryParams
 	requestTemplate := services.FormRequest(requestTemplateConfig, result)
 
-	url := config.Configs[resourceKey].URL + formQueryParams(method, result, queryParams)
+	url := config.Configs[resourceKey].URL + services.FormQueryParams(method, result, queryParams)
 	out := services.MakeRemoteRequest(url, method, requestTemplate)
 
 	if _, ok := constants.ERROR_MESSAGES[out]; ok {

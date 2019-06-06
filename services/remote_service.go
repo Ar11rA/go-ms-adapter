@@ -10,9 +10,26 @@ import (
 	"net/http"
 	"reflect"
 	"strings"
+	"fmt"
 	"time"
 	"github.com/gojektech/heimdall/httpclient"
 )
+
+// FormQueryParams - convert query params to append to url
+func FormQueryParams(method string, buff map[string]interface {}, queryParams []config.Params) string{
+	urlQueryParams := ""
+
+	if(len(queryParams) > 0){
+		var parameters []string
+		for _, element := range queryParams {
+			if(buff[element.Name] != nil) {
+				parameters = append(parameters, fmt.Sprintf("%s=%s", element.Name, buff[element.Name]))
+			}
+		}
+		return "?" + strings.Join(parameters, "&")
+	}
+	return urlQueryParams
+}
 
 // RequestValidator - validate the request params
 func RequestValidator(requestParams []config.Params, input map[string]interface{}) (bool, string) {
@@ -67,7 +84,6 @@ func MakeRemoteRequest(remoteURL string, method string, buf *bytes.Buffer) strin
 		return "INVALID_METHOD"
 	}
 
-	log.Println(response.Body)
 	byteResponse, _ := ioutil.ReadAll(response.Body)
 	return string(byteResponse)
 }

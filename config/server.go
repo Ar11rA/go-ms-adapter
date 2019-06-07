@@ -56,5 +56,5 @@ func (s *Server) Initialize(router *mux.Router) {
 // Run server
 func (s *Server) Run() {
 	log.Println("Starting server at 8081")
-	log.Fatal(http.ListenAndServe("localhost:8081", s.Router))
+	log.Fatal(http.ListenAndServe("0.0.0.0:8081", s.Router))
 }

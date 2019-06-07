@@ -10,5 +10,6 @@ import (
 func Router() *mux.Router {
 	router := mux.NewRouter()
 	router.HandleFunc("/generic", handlers.GenericHandler).Methods("POST")
+	router.HandleFunc("/health", handlers.HealthCheck).Methods("GET")
 	return router
 }
